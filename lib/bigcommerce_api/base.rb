@@ -27,6 +27,10 @@ module BigcommerceAPI
       end
     end
 
+    def self.default_options
+      Thread.current[:bigcommerce_options] ||= {}
+    end
+
     def time
       begin
         response = self.class.get('/time')
@@ -74,7 +78,7 @@ module BigcommerceAPI
 
     class << self
       def clean!(hash)
-        hash.each do |k, v| 
+        hash.each do |k, v|
           if v.is_a? Hash
             clean!(v)
           else
@@ -88,7 +92,7 @@ module BigcommerceAPI
       def to_rfc2822(datetime)
         datetime.strftime("%a, %d %b %Y %H:%M:%S %z")
       end
-      
+
       def date_adjust(params)
         [:date_created, :date_modified, :date_last_imported, :date_shipped, :min_date_created, :max_date_created, :min_date_modified, :max_date_modified, :min_date_last_imported, :max_date_last_imported].each do |date|
           [date, date.to_s].each do |d|
@@ -104,7 +108,5 @@ module BigcommerceAPI
         return params
       end
     end
-        
   end
-
 end
