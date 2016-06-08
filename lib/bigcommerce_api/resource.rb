@@ -204,7 +204,12 @@ module BigcommerceAPI
                       else
                         parse_errors(response)
                       end
-            raise BigcommerceAPI::Error.new(response.code, message)
+
+            if response.code >= 429
+              raise BigcommerceAPI::ClientError.new(response.code, message)
+            else
+              raise BigcommerceAPI::Error.new(response.code, message)
+            end
           end
           response
         rescue SocketError => e
