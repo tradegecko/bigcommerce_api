@@ -92,7 +92,7 @@ module BigcommerceAPI
 
 	    def find(order_id, id)
 	      r = BigcommerceAPI::Base.get("/orders/#{order_id}/products/#{id}")
-	      (r.success? and !r.nil?) ? self.new(r) : nil
+	      (r.success? and !r.body.nil?) ? self.new(r) : nil
 	    end
 	  end
   end

@@ -26,7 +26,7 @@ module BigcommerceAPI
     class << self
       def all(option_set_id, params={})
         resources = BigcommerceAPI::Base.get("/option_sets/#{option_set_id}/options", query: date_adjust(params))
-        (resources.success? and !resources.nil?) ? resources.collect{|r| self.new(r)} : []
+        (resources.success? and !resources.body.nil?) ? resources.collect{|r| self.new(r)} : []
       end
 
       def find(option_set_id, id)

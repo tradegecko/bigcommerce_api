@@ -30,7 +30,7 @@ module BigcommerceAPI
 
     def product_option
       po = BigcommerceAPI::Base.get '/products/' + self.product_id.to_s + '/options/' + self.product_option_id.to_s
-      (po.success? and !po.nil?) ? ProductOption.new(po) : nil
+      (po.success? and !po.body.nil?) ? ProductOption.new(po) : nil
     end
 
     def option_value
@@ -38,7 +38,7 @@ module BigcommerceAPI
       if po # we've got to have a product option for this to work
         option_id = po.option_id
         ov = BigcommerceAPI::Base.get '/options/' + option_id.to_s + '/values/' + self.option_value_id.to_s
-        (ov.success? and !ov.nil?) ? OptionValue.new(ov) : nil
+        (ov.success? and !ov.body.nil?) ? OptionValue.new(ov) : nil
       else
         return nil
       end
@@ -61,12 +61,12 @@ module BigcommerceAPI
     class << self
       def all(product_id, params={})
         resources = BigcommerceAPI::Base.get("/products/#{product_id}/skus", query: date_adjust(params))
-        (resources.success? and !resources.nil?) ? resources.collect{|r| self.new(r)} : []
+        (resources.success? and !resources.body.nil?) ? resources.collect{|r| self.new(r)} : []
       end
 
       def find(product_id, id)
         r = BigcommerceAPI::Base.get("/products/#{product_id}/skus/#{id}")
-        (r.success? and !r.nil?) ? self.new(r) : nil
+        (r.success? and !r.body.nil?) ? self.new(r) : nil
       end
     end
   end

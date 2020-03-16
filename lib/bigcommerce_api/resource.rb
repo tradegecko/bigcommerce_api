@@ -121,7 +121,7 @@ module BigcommerceAPI
             out = BigcommerceAPI::Resource.http_request(:get, "#{self.send(meth + '_hash')['resource']}")
             obj = res.singularize.camelize
             if out and !defined?('BigcommerceAPI::' + obj).nil?
-              (out.success? and !out.nil?) ? out.collect{|o| ('BigcommerceAPI::' + obj).constantize.new(o)} : []
+              (out.success? and !out.body.nil?) ? out.collect{|o| ('BigcommerceAPI::' + obj).constantize.new(o)} : []
             end
           end
         end
@@ -141,7 +141,7 @@ module BigcommerceAPI
             out = BigcommerceAPI::Resource.http_request(:get, "#{self.send(meth + '_resource')['resource']}")
             obj = resource.singularize.camelize
             if out and !defined?('BigcommerceAPI::' + obj).nil?
-              (out.success? and !out.nil?) ? ('BigcommerceAPI::' + obj).constantize.new(out) : nil
+              (out.success? and !out.body.nil?) ? ('BigcommerceAPI::' + obj).constantize.new(out) : nil
             end
           end
         end
@@ -162,7 +162,7 @@ module BigcommerceAPI
             url = '/' + meth.pluralize + '/' + self.send(meth + "_id").to_s
             out = BigcommerceAPI::Resource.http_request(:get, "#{url}")
             if out and !defined?('BigcommerceAPI::' + obj).nil?
-              (out.success? and !out.nil?) ? ('BigcommerceAPI::' + obj).constantize.new(out) : nil
+              (out.success? and !out.body.nil?) ? ('BigcommerceAPI::' + obj).constantize.new(out) : nil
             end
           end
         end
@@ -189,7 +189,7 @@ module BigcommerceAPI
       def find(id)
         return if id.blank?
         r = BigcommerceAPI::Resource.http_request(:get, "/#{resource}/#{id}")
-        (r.success? and !r.nil?) ? self.new(r) : nil
+        (r.success? and !r.body.nil?) ? self.new(r) : nil
       end
 
       def http_request(verb, url, options={})
