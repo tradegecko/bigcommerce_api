@@ -183,7 +183,7 @@ module BigcommerceAPI
 
       def all(params={})
         resources = BigcommerceAPI::Resource.http_request(:get, "/#{resource}", :query => date_adjust(params))
-        (resources.success? and !resources.nil?) ? resources.collect{|r| self.new(r)} : []
+        (resources.success? and !resources.body.nil?) ? resources.collect{|r| self.new(r)} : []
       end
 
       def find(id)
